@@ -1,4 +1,4 @@
-package com.milestonecode.springboot.user;
+package com.codecacola.springboot.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

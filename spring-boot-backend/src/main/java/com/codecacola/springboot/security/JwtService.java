@@ -1,4 +1,4 @@
-package com.milestonecode.springboot.service;
+package com.codecacola.springboot.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

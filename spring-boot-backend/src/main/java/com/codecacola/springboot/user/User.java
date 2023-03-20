@@ -1,6 +1,5 @@
-package com.milestonecode.springboot.user;
+package com.codecacola.springboot.user;
 
-import com.milestonecode.springboot.user.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,5 @@
-package com.milestonecode.springboot.user;
+package com.codecacola.springboot.user;
 
-import com.milestonecode.springboot.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
