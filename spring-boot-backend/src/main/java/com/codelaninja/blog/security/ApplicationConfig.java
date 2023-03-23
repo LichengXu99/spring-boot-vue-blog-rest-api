@@ -1,7 +1,7 @@
-package com.codecacola.springboot.security;
+package com.codelaninja.blog.security;
 
 
-import com.codecacola.springboot.user.UserRepository;
+import com.codelaninja.blog.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

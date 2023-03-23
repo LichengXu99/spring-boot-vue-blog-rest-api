@@ -1,4 +1,4 @@
-package com.codecacola.springboot.user;
+package com.codelaninja.blog.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

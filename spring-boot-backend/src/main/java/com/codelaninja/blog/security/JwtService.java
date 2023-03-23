@@ -1,4 +1,4 @@
-package com.codecacola.springboot.security;
+package com.codelaninja.blog.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

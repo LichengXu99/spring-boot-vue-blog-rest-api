@@ -1,9 +1,9 @@
-package com.codecacola.springboot.auth;
+package com.codelaninja.blog.auth;
 
-import com.codecacola.springboot.security.JwtService;
-import com.codecacola.springboot.user.Role;
-import com.codecacola.springboot.user.User;
-import com.codecacola.springboot.user.UserRepository;
+import com.codelaninja.blog.security.JwtService;
+import com.codelaninja.blog.user.Role;
+import com.codelaninja.blog.user.User;
+import com.codelaninja.blog.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

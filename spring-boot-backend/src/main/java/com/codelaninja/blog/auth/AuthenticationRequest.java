@@ -1,4 +1,5 @@
-package com.codecacola.springboot.auth;
+package com.codelaninja.blog.auth;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public class AuthenticationRequest {
 
-    private String token;
+    private String email;
+    private String password;
 
 }

@@ -1,4 +1,4 @@
-package com.codecacola.springboot.demo;
+package com.codelaninja.blog.demo;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

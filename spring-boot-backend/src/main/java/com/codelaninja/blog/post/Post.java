@@ -1,6 +1,6 @@
-package com.codecacola.springboot.post;
+package com.codelaninja.blog.post;
 
-import com.codecacola.springboot.category.Category;
+import com.codelaninja.blog.category.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

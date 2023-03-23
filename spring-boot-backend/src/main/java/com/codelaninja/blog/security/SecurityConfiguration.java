@@ -1,4 +1,4 @@
-package com.codecacola.springboot.security;
+package com.codelaninja.blog.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

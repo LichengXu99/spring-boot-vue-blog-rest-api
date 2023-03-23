@@ -1,4 +1,4 @@
-package com.codecacola.springboot.auth;
+package com.codelaninja.blog.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

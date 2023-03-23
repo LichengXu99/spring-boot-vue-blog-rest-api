@@ -1,4 +1,4 @@
-package com.codecacola.springboot.user;
+package com.codelaninja.blog.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String username;
     @Column(length = 50, nullable = false)
     private String email;
-    @Column(length = 30, nullable = false)
+    @Column(nullable = false)
     private String password;
     private Date lastLogin;
 
