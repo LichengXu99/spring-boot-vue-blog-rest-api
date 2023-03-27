@@ -36,7 +36,7 @@ public class AuthenticationService {
                 .build();
     }
 
-    // Authenticate the user by the username and password.
+    // Authenticate the user by the email and password.
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

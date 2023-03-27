@@ -10,18 +10,18 @@
         <div v-if="!successful">
           <div class="form-group">
             <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
+            <Field name="username" type="text" class="form-control"/>
+            <ErrorMessage name="username" class="error-feedback"/>
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
+            <Field name="email" type="email" class="form-control"/>
+            <ErrorMessage name="email" class="error-feedback"/>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
+            <Field name="password" type="password" class="form-control"/>
+            <ErrorMessage name="password" class="error-feedback"/>
           </div>
 
           <div class="form-group">
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
+import {Form, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 
 export default {
@@ -126,6 +126,7 @@ export default {
 #profile-img {
   max-width: 10%;
 }
+
 .error-feedback {
   color: red;
 }
