@@ -1,6 +1,14 @@
 <template>
-  <h1>Home.vue</h1>
+  <ArticleList />
 </template>
 
 <script>
+import ArticleList from "@/components/ArticleList.vue";
+
+export default {
+  name: "HomePage",
+  components: {
+    ArticleList
+  },
+}
 </script>

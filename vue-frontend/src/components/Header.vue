@@ -1,21 +1,25 @@
 <template>
-    <header class="header">
+  <header class="header">
+    <!-- Blog logo -->
 
-      <!-- Navigation Bar -->
-      <nav class="nav">
-        <ul class="navigation-main">
-          <li>
-            <router-link to="/">Home</router-link>
-          </li>
-          <li>
-            <router-link to="/about">About</router-link>
-          </li>
-          <li><router-link to="/contact">Contact</router-link></li>
-        </ul>
-      </nav>
-      <!-- Navigation Bar -->
+    <!-- Blog logo -->
+    <!-- Navigation Bar -->
+    <nav class="nav">
+      <ul class="navigation-main">
+        <li>
+          <router-link to="/">Home</router-link>
+        </li>
+        <li>
+          <router-link to="/about">About</router-link>
+        </li>
+        <li>
+          <router-link to="/contact">Contact</router-link>
+        </li>
+      </ul>
+    </nav>
+    <!-- Navigation Bar -->
 
-    </header>
+  </header>
 </template>
 
 <script>
@@ -60,8 +64,8 @@ export default {
   text-align: left;
 }
 
-.navigation-main li.focus>ul,
-.navigation-main li:hover>ul {
+.navigation-main li.focus > ul,
+.navigation-main li:hover > ul {
   top: auto;
   left: auto;
 }
@@ -70,8 +74,8 @@ export default {
   display: block;
 }
 
-.navigation-main li li.focus>ul,
-.navigation-main li :li:hover>ul {
+.navigation-main li li.focus > ul,
+.navigation-main li :li:hover > ul {
   left: 100%;
   top: 0;
 }
@@ -85,14 +89,14 @@ export default {
 }
 
 .navigation-main a:hover,
-.navigation-main li:hover>a,
-.navigation-main .focus>a,
-.navigation-main .current-menu-item>a,
-.navigation-main .current-menu-ancestor>a {
+.navigation-main li:hover > a,
+.navigation-main .focus > a,
+.navigation-main .current-menu-item > a,
+.navigation-main .current-menu-ancestor > a {
   color: #ffcc03;
 }
 
-.navigation-main .menu-item-has-children>a::before {
+.navigation-main .menu-item-has-children > a::before {
   content: "";
   position: absolute;
   right: 0;
@@ -102,7 +106,7 @@ export default {
   border-top-color: currentColor;
 }
 
-.navigation-main ul .menu-item-has-children>a::before {
+.navigation-main ul .menu-item-has-children > a::before {
   right: 2px;
   border-top-color: transparent;
   border-left-color: currentColor;
