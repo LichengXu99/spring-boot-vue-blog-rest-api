@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,11 +23,17 @@ public class Category {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-    @Column(length = 50, nullable = false)
-    private String categoryName;
+    @Column(
+            length = 50,
+            nullable = false
+    )
+    private String name;
     private String description;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts;
+    @OneToMany(
+            mappedBy = "category",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Post> posts = new ArrayList<>();
 
 }

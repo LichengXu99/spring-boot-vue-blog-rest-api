@@ -1,7 +1,7 @@
 package com.codelaninja.blog.auth;
 
+import com.codelaninja.blog.auth.impl.AuthenticationServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationService service;
+    private final AuthenticationServiceImpl service;
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
