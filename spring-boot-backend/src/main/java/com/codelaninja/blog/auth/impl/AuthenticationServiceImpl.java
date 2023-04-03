@@ -14,6 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -27,13 +30,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     // Allow to create a user,then save them into database and generate the token.
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .lastLogin(Date.valueOf(LocalDate.now()))
                 .role(Role.USER)
                 .build();
         repository.save(user);
+
         var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()
@@ -50,8 +56,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         request.getPassword()
                 )
         );
+
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
+        user.setLastLogin(Date.valueOf(LocalDate.now()));
+        repository.save(user);
+
        var jwtToken = jwtService.generateToken(user);
 
         return AuthenticationResponse.builder()

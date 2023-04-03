@@ -28,7 +28,6 @@ public class PostDto {
 
     // Post description should be not null or empty
     // Post description should have at least 10 characters
-    @NotEmpty
     @Size(
             min = 10,
             message = "Post description should have at least 10 characters"
@@ -39,22 +38,17 @@ public class PostDto {
     @NotEmpty
     private String content;
 
-    @NotEmpty
     private Date releaseDate;
 
-    @NotEmpty
     private Date lastUpdate;
 
-    @NotEmpty
     private Status status;
 
     @NotEmpty
     private Long userId;
 
-    @NotEmpty
     private Long categoryId;
 
-    @NotEmpty
     private Long tagId;
 
 }
