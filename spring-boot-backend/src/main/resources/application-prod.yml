@@ -1,0 +1,15 @@
+  spring:
+    datasource:
+      url: ${burl:jdbc:mariadb://localhost:3306/my-blog?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&preferredTestQuery=select now()}
+      username: ${username:root}
+      password: ${password:password}
+      driver-class-name: org.mariadb.jdbc.Driver
+    jpa:
+      show-sql: false
+      properties:
+        hibernate:
+          format_sql: true
+      database: mysql
+      database-platform: org.hibernate.dialect.MySQL55Dialect
+
+

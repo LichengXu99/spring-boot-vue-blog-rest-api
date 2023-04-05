@@ -17,8 +17,7 @@ public class PostController {
 
     private final PostServiceImpl postService;
 
-    @PreAuthorize("hasR" +
-            "ole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(
              @RequestBody PostDto postDto

@@ -31,6 +31,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/v1/auth/**")
                 .permitAll()
+                .requestMatchers("/api/v1/posts", "/api/v1/posts/{id}")
+                .permitAll()
+                .requestMatchers("/api/v1/categories", "/api/v1/categories/{id}")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -45,8 +49,8 @@ public class SecurityConfiguration {
 
     @Bean
     CorsFilter corsFilter() {
-        CorsFilter filter = new CorsFilter();
-        return filter;
+
+        return new CorsFilter();
     }
 
 
