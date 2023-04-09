@@ -18,7 +18,7 @@ public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(
             @RequestBody CategoryDto categoryDto

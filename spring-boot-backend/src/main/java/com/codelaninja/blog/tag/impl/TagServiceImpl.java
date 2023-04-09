@@ -1,32 +1,29 @@
 package com.codelaninja.blog.tag.impl;
 
-import com.codelaninja.blog.category.Category;
 import com.codelaninja.blog.exception.ResourceNotFoundException;
 import com.codelaninja.blog.tag.Tag;
 import com.codelaninja.blog.tag.TagDto;
 import com.codelaninja.blog.tag.TagRepository;
 import com.codelaninja.blog.tag.TagService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
     private final ModelMapper mapper;
 
-    public TagServiceImpl(TagRepository tagRepository, ModelMapper mapper) {
-        this.tagRepository = tagRepository;
-        this.mapper = mapper;
-    }
-
     @Override
     public TagDto addTag(TagDto tagDto) {
 
-        Tag newTag = mapToEntity(tagDto);
+        Tag newTag = tagRepository.save(mapToEntity(tagDto));
 
         return mapToDTO(newTag);
     }
@@ -43,6 +40,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Cacheable(value = "tagCache")
     public TagDto getTagById(Long tagId) {
 
         Tag tag = tagRepository.findById(tagId)

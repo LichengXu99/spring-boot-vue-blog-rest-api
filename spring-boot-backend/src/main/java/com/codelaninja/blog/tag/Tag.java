@@ -7,8 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -25,10 +25,5 @@ public class Tag {
     private Long id;
     @Column(nullable = false)
     private String name;
-    @OneToMany(
-            mappedBy = "tag",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Post> posts = new ArrayList<>();
+
 }

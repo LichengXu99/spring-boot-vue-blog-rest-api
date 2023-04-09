@@ -36,7 +36,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .lastLogin(Date.valueOf(LocalDate.now()))
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
         repository.save(user);
 

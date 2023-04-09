@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -38,16 +41,18 @@ public class Post {
             nullable = false
     )
     private String content;
+    @CreatedDate
     @Column(
-            columnDefinition = "DATETIME",
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
             nullable = false
     )
-    private Date releaseDate;
+    private Date createDate;
+    @LastModifiedDate
     @Column(
-            columnDefinition = "DATETIME",
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
             nullable = false
     )
-    private Date lastUpdate;
+    private Date lastUpdateDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -59,8 +64,12 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TAG_ID")
-    private Tag tag;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "POST_TAG",
+            joinColumns = {@JoinColumn(name = "TAG_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "POST_ID")}
+    )
+    private List<Tag> tags;
 
 }

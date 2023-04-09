@@ -5,20 +5,26 @@ import com.codelaninja.blog.category.CategoryRepository;
 import com.codelaninja.blog.exception.ResourceNotFoundException;
 import com.codelaninja.blog.post.*;
 import com.codelaninja.blog.tag.Tag;
+import com.codelaninja.blog.tag.TagDto;
 import com.codelaninja.blog.tag.TagRepository;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -26,26 +32,28 @@ public class PostServiceImpl implements PostService {
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
 
-    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper, CategoryRepository categoryRepository, TagRepository tagRepository) {
-        this.postRepository = postRepository;
-        this.mapper = mapper;
-        this.categoryRepository = categoryRepository;
-        this.tagRepository = tagRepository;
-    }
-
     @Override
+    @Transactional
     public PostDto createPost(PostDto postDto) {
 
-        Category category = categoryRepository.findById(postDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getId()));
-        Tag tag = tagRepository.findById(postDto.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", postDto.getId()));
-//         Convert DTO to entity
+        Category category = categoryRepository.findById(postDto.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
+
+        List<Tag> tags = new ArrayList<>();
+        if (postDto.getTags() != null) {
+            tags = postDto.getTags()
+                    .stream()
+                    .map(tagDto -> tagRepository.findById(tagDto.getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagDto.getId())))
+                    .collect(Collectors.toList());
+        }
+
+        // Convert DTO to entity
         Post post = mapToEntity(postDto);
         post.setCategory(category);
-        post.setTag(tag);
-        post.setReleaseDate(Date.valueOf(LocalDate.now()));
-        post.setLastUpdate(Date.valueOf(LocalDate.now()));
+        post.setTags(tags);
+        post.setCreateDate(Date.valueOf(LocalDate.now()));
+        post.setLastUpdateDate(Date.valueOf(LocalDate.now()));
         Post newPost = postRepository.save(post);
 
         // Convert entity to DTO
@@ -85,6 +93,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable(value = "postCache")
     public PostDto getPostById(Long id) {
 
         Post post = postRepository.findById(id)
@@ -94,6 +103,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public PostDto updatePost(PostDto postDto, Long id) {
         // Get post by id from database
         Post post = postRepository.findById(id)
@@ -102,22 +112,30 @@ public class PostServiceImpl implements PostService {
         Category category = categoryRepository.findById(postDto.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", postDto.getCategoryId()));
 
-        Tag tag = tagRepository.findById(postDto.getTagId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", postDto.getTagId()));
+        List<Tag> tags = new ArrayList<>();
+        if (postDto.getTags() != null) {
+            tags = postDto.getTags()
+                    .stream()
+                    .map(tagDto -> tagRepository.findById(tagDto.getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Tag", "id", tagDto.getId())))
+                    .collect(Collectors.toList());
+        }
 
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
-        post.setLastUpdate(Date.valueOf(LocalDate.now()));
+        post.setLastUpdateDate(Date.valueOf(LocalDate.now()));
         post.setStatus(postDto.getStatus());
+        post.setUser(post.getUser());
         post.setCategory(category);
-        post.setTag(tag);
+        post.setTags(tags);
         Post updatedPost = postRepository.save(post);
 
         return mapToDTO(updatedPost);
     }
 
     @Override
+    @Transactional
     public void deletePostById(Long id) {
         // Get post by id from the database
         Post post = postRepository.findById(id)
@@ -127,10 +145,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable(value = "postCache")
     public List<PostDto> getPostsByCategory(Long categoryId) {
-
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
         List<Post> posts = postRepository.findByCategoryId(categoryId);
 

@@ -5,22 +5,20 @@ import com.codelaninja.blog.category.CategoryDto;
 import com.codelaninja.blog.category.CategoryRepository;
 import com.codelaninja.blog.category.CategoryService;
 import com.codelaninja.blog.exception.ResourceNotFoundException;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper mapper;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper mapper) {
-        this.categoryRepository = categoryRepository;
-        this.mapper = mapper;
-    }
 
     @Override
     public CategoryDto addCategory(CategoryDto categoryDto) {
@@ -42,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "categoryCache")
     public CategoryDto getCategoryById(Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)

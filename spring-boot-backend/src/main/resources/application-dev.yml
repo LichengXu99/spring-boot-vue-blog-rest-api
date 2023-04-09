@@ -1,18 +1,26 @@
-  spring:
-    datasource:
-      url: ${burl:jdbc:mariadb://localhost:3306/my-blog?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&preferredTestQuery=select now()}
-      username: ${username:root}
-      password: ${password:password}
-      driver-class-name: org.mariadb.jdbc.Driver
-    jpa:
+spring:
+  datasource:
+    url: ${burl:jdbc:mariadb://localhost:3306/my-blog?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&preferredTestQuery=select now()}
+    username: ${username:root}
+    password: ${password:password}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: create-drop
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-      database: mysql
-      database-platform: org.hibernate.dialect.MySQL55Dialect
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL55Dialect
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+      database: 0
+      connect-timeout: 10s
+
 
 
 

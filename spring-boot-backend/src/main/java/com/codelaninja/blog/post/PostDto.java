@@ -1,8 +1,6 @@
 package com.codelaninja.blog.post;
 
-import com.codelaninja.blog.category.Category;
-import com.codelaninja.blog.tag.Tag;
-import com.codelaninja.blog.user.User;
+import com.codelaninja.blog.tag.TagDto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -10,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -38,17 +37,16 @@ public class PostDto {
     @NotEmpty
     private String content;
 
-    private Date releaseDate;
+    private Date createDate;
 
-    private Date lastUpdate;
+    private Date lastUpdateDate;
 
     private Status status;
 
-    @NotEmpty
     private Long userId;
 
     private Long categoryId;
 
-    private Long tagId;
+    private List<TagDto> tags;
 
 }
