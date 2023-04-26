@@ -12,26 +12,47 @@
         </div>
         <div class="footer">
             <div class="actions">
-                <a href="javascript:void(0);" class="btn btn-outline-secondary">繼續閱讀</a>
+                <router-link  :to="'/post/' + post.id">繼續閱讀</router-link>
             </div>
             <ul class="category">
-                <li><a href="javascript:void(0);">{{ post.category }}</a></li>
+                <li>{{ post.category }}</li>
             </ul>
         </div>
     </div>
 
+  <!-- Pagination -->
     <ul class="pagination pagination-primary">
-        <li class="page-item"><button class="page-link" href="javascript:void(0);">Previous</button></li>
+
+        <li class="page-item">
+            <button class="page-link"
+                    :disabled="pageNum === 1"
+                    @click="previousPage">
+                Previous
+            </button>
+        </li>
 
         <li class="page-item"
             v-for="page in totalPages"
+            :class="{ active: page === pageNum }"
             :key="page">
-            <button class="page-link">{{ page }}</button>
+            <button class="page-link"
+                    :disabled="pageNum === page"
+                    @click="getPage(page)">
+                {{ page }}
+            </button>
         </li>
-        <!-- TODO -->
 
-        <li class="page-item"><button class="page-link" href="javascript:void(0);">Next</button></li>
+        <li class="page-item">
+            <button class="page-link"
+                    :disabled="last === 'true'"
+                    @click="nextPage">
+                Next
+            </button>
+        </li>
+
     </ul>
+  <!-- Pagination -->
+
 </template>
 
 <script>
@@ -40,33 +61,54 @@ export default {
     data() {
         return {
             posts: [],
-            totalPages: '',
             pageNo: 0,
-            sortBy: 'date',
+            sortBy: '',
+            totalPages: '',
+            last: 'false',
         }
     },
-    created() {
-        this.$store.dispatch('getPosts', { pageNo: this.pageNo, sortBy: this.sortBy })
-            .then(response => {
-                this.posts = response.content;
-                this.totalPages = response.totalPages;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+    computed: {
+        pageNum() {
+            return this.pageNo + 1;
+        },
+    },
+    mounted() {
+        this.fetchPosts();
     },
     methods: {
-        loadMore() {
-            this.pageNo++;
-            this.$store.dispatch('getPosts', {
-                pageNo: this.pageNo,
-                sortBy: 'created_at'
-            }).then((data) => {
-                this.posts = [...this.posts, ...data.posts];
-            });
-        }
+        fetchPosts() {
+            this.$store.dispatch('getPosts', {pageNo: this.pageNo, sortBy: this.sortBy})
+                .then(response => {
+                    this.posts = response.content;
+                    this.totalPages = response.totalPages;
+                    this.last = response.last;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        getPage(page) {
+            this.pageNo = page - 1;
+            this.fetchPosts();
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 500);
+        },
+        previousPage() {
+            if (this.pageNo !== 0) {
+                this.pageNo--;
+                this.fetchPosts();
+            }
+        },
+        nextPage() {
+            if (this.pageNum < this.totalPages) {
+                this.pageNo++;
+                this.fetchPosts();
+            }
+        },
     }
 };
+
 </script>
 
 <style scoped>

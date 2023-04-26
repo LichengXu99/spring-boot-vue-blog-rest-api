@@ -93,7 +93,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @Cacheable(value = "postCache")
     public PostDto getPostById(Long id) {
 
         Post post = postRepository.findById(id)

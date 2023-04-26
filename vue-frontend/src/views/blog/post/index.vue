@@ -4,10 +4,27 @@
 
 <script>
 export default {
-    name: "Post",
+    name: "PostContent",
     data() {
         return {
+            id: '',
             markdown: '',
+        }
+    },
+    mounted() {
+        this.id = this.$route.params.id;
+        this.fetchContent();
+    },
+
+    methods: {
+        fetchContent() {
+            this.$store.dispatch('getPost', {id: this.id})
+                .then(response => {
+                    this.markdown = response.content;
+                })
+                .catch(error => {
+                    console.log(error)
+                });
         }
     },
 };

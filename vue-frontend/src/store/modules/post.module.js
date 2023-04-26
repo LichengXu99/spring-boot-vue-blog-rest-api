@@ -3,7 +3,11 @@ import PostsService from "@/services/posts.service";
 export const post = {
     state: {
         loaded: false,
+        id: '',
+        post: [],
         posts: [],
+        pageNo: '',
+        sortBy: '',
     },
     mutations: {
         getPostsSuccess(state, posts) {
@@ -13,6 +17,14 @@ export const post = {
         getPostsFailure(state) {
             state.loaded = false;
             state.posts = [];
+        },
+        getPostSuccess(state, post) {
+            state.loaded = true;
+            state.post = post;
+        },
+        getPostFailure(state) {
+            state.loaded = false;
+            state.post = [];
         },
     },
     actions: {
@@ -28,10 +40,17 @@ export const post = {
                 }
             );
         },
+        getPost({ commit }, { id }) {
+            return PostsService.getOnePostDetails(id).then(
+                response => {
+                    commit('getPostSuccess', response.data);
+                    return Promise.resolve(response);
+                },
+                error => {
+                    commit('getPostFailure');
+                    return Promise.reject(error)
+                }
+            )
+        }
     },
-    getters: {
-        getArticles(state) {
-            return state.posts;
-        },
-    }
 };

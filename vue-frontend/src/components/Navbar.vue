@@ -45,6 +45,10 @@ export default {
     background-color: #145474;
     display: flex;
     align-items: center;
+    position: fixed;
+    width: 100%; /* Limit width of header  */
+    transform: translate(0, 0);
+    z-index: 999;
 }
 
 .nav {

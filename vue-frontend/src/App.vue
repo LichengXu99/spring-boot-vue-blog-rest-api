@@ -1,6 +1,7 @@
 <template>
-    <div id="app">
+    <div id="app" v-cloak>
         <Navbar/>
+        <div id="placeholder"></div>
         <main>
             <div class="container">
                 <div class="row clearfix">
@@ -33,13 +34,32 @@ export default {
         SideBox,
         Navbar,
         Footer
-    }
+    },
 }
 </script>
 
 <style>
 .container {
     min-height: 1000px;
+}
+
+#placeholder {
+    min-height: 100px;
+}
+
+/** Computer **/
+@media only screen and (min-width: 769px) {
+    #placeholder { min-height: 100px }
+}
+
+/** Tab **/
+@media only screen and (min-width: 491px) and (max-width: 768px) {
+    #placeholder { min-height: 75px }
+}
+
+/** Phone **/
+@media only screen and (min-width: 0px) and (max-width: 490px){
+     #placeholder { min-height: 50px }
 }
 
 </style>

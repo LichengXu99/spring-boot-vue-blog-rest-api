@@ -19,7 +19,7 @@
 
         <div class="card" id="tag">
             <div class="header">
-                <h2>文章標籤</h2>
+                <span id="tag_title">文章標籤</span>
             </div>
             <div class="body widget">
                 <ul class="list-unstyled categories-clouds m-b-0">
@@ -60,6 +60,12 @@ body{
     width: 100%;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
 }
+
+#tag_title {
+    font-size: 36px;
+    color: #f1f1f1;
+}
+
 .card .body {
     color: #444;
     padding: 20px;

@@ -36,7 +36,7 @@ public class PostController {
         return postService.getAllPosts(pageNo, pageSize, sortBy, sortDir);
     }
 
-    @GetMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<PostDto> getPostById(
             @PathVariable(name = "id") Long id
     ) {

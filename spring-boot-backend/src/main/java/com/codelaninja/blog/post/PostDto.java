@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDto {
 
-    private long id;
+    private Long id;
     // Post should not be null  or empty
     // Post should have at least 2 characters
     @NotEmpty
