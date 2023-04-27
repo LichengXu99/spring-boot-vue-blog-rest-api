@@ -25,5 +25,6 @@ public class Tag {
     private Long id;
     @Column(nullable = false)
     private String name;
-
+    @ManyToMany(mappedBy = "tags")
+    private Set<Post> posts;
 }

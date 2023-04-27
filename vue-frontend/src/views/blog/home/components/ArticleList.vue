@@ -2,22 +2,28 @@
     <div class="card single"
          v-for="post in posts"
          :key="post.id">
+        <div class="category">
+            {{ post.categoryName }}
+        </div>
         <div class="body">
             <div class="img-post">
                 <img class="d-block img-fluid" src="https://www.bootdey.com/image/800x280/FFB6C1/000000"
                      alt="First slide">
             </div>
-            <h3><a href="blog-details.html">All photographs are accurate</a></h3>
+            <h3>{{ post.title }}</h3>
             <p>{{ post.description }}</p>
         </div>
+
         <div class="footer">
             <div class="actions">
-                <router-link  :to="'/post/' + post.id">繼續閱讀</router-link>
+                <router-link class="btn btn-outline-secondary" :to="'/post/' + post.id">繼續閱讀</router-link>
             </div>
-            <ul class="category">
-                <li>{{ post.category }}</li>
+            <ul class="tags" v-for="(tag, index) in post.tags" :key="index">
+                <li>{{ tag.name }}</li>
             </ul>
         </div>
+
+
     </div>
 
   <!-- Pagination -->
@@ -44,7 +50,7 @@
 
         <li class="page-item">
             <button class="page-link"
-                    :disabled="last === 'true'"
+                    :disabled="last === true || pageNo === totalPages - 1"
                     @click="nextPage">
                 Next
             </button>
@@ -63,26 +69,49 @@ export default {
             posts: [],
             pageNo: 0,
             sortBy: '',
+            tagId: '',
+            categoryId: '',
             totalPages: '',
-            last: 'false',
+            last: false,
         }
     },
     computed: {
         pageNum() {
             return this.pageNo + 1;
         },
+        keyword() {
+            return this.$store.getters.getKeyword;
+        },
     },
     mounted() {
         this.fetchPosts();
     },
+    watch: {
+        keyword(newVal, oldVal) {
+            this.fetchPosts();
+        },
+    },
     methods: {
         fetchPosts() {
-            this.$store.dispatch('getPosts', {pageNo: this.pageNo, sortBy: this.sortBy})
+            this.$store.dispatch('getPosts', {
+                pageNo: this.pageNo,
+                sortBy: this.sortBy,
+                categoryId: this.categoryId,
+                tagId: this.tagId,
+                keyword: this.keyword,
+            })
                 .then(response => {
-                    this.posts = response.content;
-                    this.totalPages = response.totalPages;
-                    this.last = response.last;
-                })
+                        this.posts = response.content;
+                        this.totalPages = response.totalPages;
+                        this.last = response.last;
+                    }, setTimeout(() => {
+                        window.scroll({
+                            top: 0,
+                            left: 0,
+                            behavior: 'smooth'
+                        });
+                    }, 500)
+                )
                 .catch(error => {
                     console.error(error);
                 });
@@ -90,9 +119,6 @@ export default {
         getPage(page) {
             this.pageNo = page - 1;
             this.fetchPosts();
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 500);
         },
         previousPage() {
             if (this.pageNo !== 0) {
@@ -172,43 +198,60 @@ body {
 }
 
 .single .footer {
-    padding: 0 30px 30px 30px
+    padding: 0 30px 30px 30px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.single .category {
+    padding: 5px 20px;
+    border-radius: 5px 5px 0 0;
+    background-color: rgba(171, 206, 221, 0.9);
+    display: inline-block;
+    color: rgb(0, 0, 0);
+    text-align: right;
+    font-weight: bold;
+    font-family: "cwTeXFangSong", "Noto Serif TC", "黑體-繁", "微軟正黑體", serif;
 }
 
 .single .footer .actions {
     display: inline-block
 }
 
-.single .footer .category {
+.single .footer .tags {
     cursor: default;
     list-style: none;
-    padding: 0;
     display: inline-block;
     float: right;
     margin: 0;
-    line-height: 35px
+    line-height: 35px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: right;
 }
 
-.single .footer .category li {
+.single .footer .tags li {
     border-left: solid 1px rgba(160, 160, 160, 0.3);
     display: inline-block;
     font-weight: 400;
     letter-spacing: 0.25em;
     line-height: 1;
     margin: 0 0 0 2em;
-    padding: 0 0 0 2em;
     text-transform: uppercase;
-    font-size: 13px
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: #bfbfbf;
+    padding: 5px 10px;
+    text-align: right;
 }
 
-.single .footer .category li a {
+.single .footer .tags li a {
     color: #777
 }
 
-.single .footer .category li:first-child {
+.single .footer .tags li:first-child {
     border-left: 0;
-    margin-left: 0;
-    padding-left: 0
+    margin-left: auto;
 }
 
 .single h3 {
@@ -249,12 +292,16 @@ body {
     font-size: 12px
 }
 
+ul {
+    padding-left: 0.5rem;
+}
+
 @media (max-width: 640px) {
     .blog-page .left-box .single-comment-box > ul > li {
         padding: 25px 0
     }
 
-    .blog-page .single .footer .category {
+    .blog-page .single .footer .tags {
         float: none;
         margin-top: 10px
     }
@@ -262,6 +309,10 @@ body {
     .blog-page .single .body,
     .blog-page .single .footer {
         padding: 30px
+    }
+
+    ul {
+        padding-left: 0.1rem;
     }
 }
 </style>

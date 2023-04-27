@@ -13,9 +13,11 @@
                     <div class="dropdown">
                         <button class="dropbtn">Category ⏷</button>
                         <div class="dropdown-content">
-                            <a href="#">Link 1</a>
-                            <a href="#">Link 2</a>
-                            <a href="#">Link 3</a>
+                            <a href="#"
+                               v-for="category in categories"
+                               :key="category.id">
+                                {{ category.name }}
+                            </a>
                         </div>
                     </div>
                 </li>
@@ -36,7 +38,25 @@
 <script>
 export default {
     name: 'ShareHeader',
-    components: {},
+    data() {
+        return {
+            categories: [],
+        }
+    },
+    created() {
+        this.fetchCategories();
+    },
+    methods: {
+        fetchCategories() {
+            this.$store.dispatch("getCategories")
+                .then(response => {
+                    this.categories = response;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
+    }
 }
 </script>
 
@@ -79,8 +99,8 @@ export default {
     text-align: left;
 }
 
-.navigation-main li.focus>ul,
-.navigation-main li:hover>ul {
+.navigation-main li.focus > ul,
+.navigation-main li:hover > ul {
     top: auto;
     left: auto;
 }
@@ -89,8 +109,8 @@ export default {
     display: block;
 }
 
-.navigation-main li li.focus>ul,
-.navigation-main li li:hover>ul {
+.navigation-main li li.focus > ul,
+.navigation-main li li:hover > ul {
     left: 100%;
     top: 0;
 }
@@ -104,14 +124,14 @@ export default {
 }
 
 .navigation-main a:hover,
-.navigation-main li:hover>a,
-.navigation-main .focus>a,
-.navigation-main .current-menu-item>a,
-.navigation-main .current-menu-ancestor>a {
+.navigation-main li:hover > a,
+.navigation-main .focus > a,
+.navigation-main .current-menu-item > a,
+.navigation-main .current-menu-ancestor > a {
     color: #ffcc03;
 }
 
-.navigation-main .menu-item-has-children>a::before {
+.navigation-main .menu-item-has-children > a::before {
     content: "";
     position: absolute;
     right: 0;
@@ -121,7 +141,7 @@ export default {
     border-top-color: currentColor;
 }
 
-.navigation-main ul .menu-item-has-children>a::before {
+.navigation-main ul .menu-item-has-children > a::before {
     right: 2px;
     border-top-color: transparent;
     border-left-color: currentColor;

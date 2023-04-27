@@ -8,6 +8,9 @@ export const post = {
         posts: [],
         pageNo: '',
         sortBy: '',
+        categoryId: '',
+        tagId: '',
+        keyword: '',
     },
     mutations: {
         getPostsSuccess(state, posts) {
@@ -26,10 +29,16 @@ export const post = {
             state.loaded = false;
             state.post = [];
         },
+        setKeywordSuccess(state, keyword) {
+            state.keyword = keyword;
+        }
     },
     actions: {
-        getPosts({ commit }, { pageNo, sortBy }) {
-            return PostsService.getAllPosts(pageNo, sortBy).then(
+        setKeyword({ commit }, keyword) {
+            commit('setKeywordSuccess', keyword);
+        },
+        getPosts({ commit }, { pageNo, sortBy, categoryId, tagId , keyword}) {
+            return PostsService.getAllPosts(pageNo, sortBy, categoryId, tagId, keyword).then(
                 response => {
                     commit('getPostsSuccess', response.data);
                     return Promise.resolve(response);
@@ -51,6 +60,9 @@ export const post = {
                     return Promise.reject(error)
                 }
             )
-        }
+        },
+    },
+    getters: {
+        getKeyword: state => state.keyword
     },
 };

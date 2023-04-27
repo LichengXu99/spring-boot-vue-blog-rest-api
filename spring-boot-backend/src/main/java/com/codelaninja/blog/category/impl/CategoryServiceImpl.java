@@ -50,6 +50,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "categoryCache")
+    public String getCategoryNameById(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
+        return category.getName();
+    }
+
+    @Override
     public CategoryDto updateCategory(CategoryDto categoryDto, Long categoryId) {
 
         Category category = categoryRepository.findById(categoryId)

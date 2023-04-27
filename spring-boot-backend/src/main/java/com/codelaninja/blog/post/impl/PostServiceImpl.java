@@ -5,7 +5,6 @@ import com.codelaninja.blog.category.CategoryRepository;
 import com.codelaninja.blog.exception.ResourceNotFoundException;
 import com.codelaninja.blog.post.*;
 import com.codelaninja.blog.tag.Tag;
-import com.codelaninja.blog.tag.TagDto;
 import com.codelaninja.blog.tag.TagRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -14,8 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -62,7 +63,8 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponse getAllPosts(Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+    @Cacheable(value = "postCache")
+    public PostResponse getAllPosts(Integer pageNo, Integer pageSize, String sortBy, String sortDir, Long tagId, Long categoryId, String keyword) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -70,7 +72,19 @@ public class PostServiceImpl implements PostService {
         // Create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
-        Page<Post> posts = postRepository.findAll(pageable);
+        Specification<Post> spec = Specification.where(null);
+
+        if (tagId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.join("tags").get("id"), tagId));
+        }
+        if (categoryId != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category").get("id"), categoryId));
+        }
+        if (StringUtils.hasText(keyword)) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), "%" + keyword + "%"));
+        }
+
+        Page<Post> posts = postRepository.findAll(spec, pageable);
 
         // Get content for page object
         List<Post> listOfPosts = posts.getContent();
@@ -181,11 +195,10 @@ public class PostServiceImpl implements PostService {
 
     private PostDto mapToDTO(Post post) {
         PostDto postDto = mapper.map(post, PostDto.class);
-//        PostDto postDto = new PostDto();
-//        postDto.setId(post.getId());
-//        postDto.setTitle(post.getTitle());
-//        postDto.setDescription(post.getDescription());
-//        postDto.setContent(post.getContent());
+        Long categoryId = post.getCategory().getId();
+        String categoryName = post.getCategory().getName();
+        postDto.setCategoryId(categoryId);
+        postDto.setCategoryName(categoryName);
         return postDto;
     }
 }

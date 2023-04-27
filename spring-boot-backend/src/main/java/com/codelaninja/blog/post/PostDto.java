@@ -7,13 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDto {
+public class PostDto implements Serializable {
 
     private Long id;
     // Post should not be null  or empty
@@ -46,6 +47,8 @@ public class PostDto {
     private Long userId;
 
     private Long categoryId;
+
+    private String categoryName;
 
     private List<TagDto> tags;
 

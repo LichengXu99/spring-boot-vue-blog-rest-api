@@ -1,53 +1,68 @@
 <template>
-        <div class="card" id="search">
-            <div class="body search">
-                <div class="input-group m-b-0">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-search"></i></span>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Search...">
-                </div>
+    <div class="card" id="search">
+        <div class="body search">
+            <div class="input-group m-b-0">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                <input type="text" class="form-control"
+                       v-model="searchKeyword" placeholder="Search...">
+                <button class="btn btn-outline-danger" @click="searchPosts">Search</button>
             </div>
         </div>
+    </div>
 
-        <div class="card" id="profile">
-            <div class="body widget">
-
-            </div>
+    <div class="card" id="profile">
+        <div class="body widget">
 
         </div>
 
-        <div class="card" id="tag">
-            <div class="header">
-                <span id="tag_title">文章標籤</span>
-            </div>
-            <div class="body widget">
-                <ul class="list-unstyled categories-clouds m-b-0">
-                    <li><a href="javascript:void(0);">Java</a></li>
-                    <li><a href="javascript:void(0);">Spring</a></li>
-                    <li><a href="javascript:void(0);">Vue.js</a></li>
-                    <li><a href="javascript:void(0);">Wordpress</a></li>
-                    <li><a href="javascript:void(0);">Angular JS</a></li>
-                    <li><a href="javascript:void(0);">Enterprise Mobility</a></li>
-                    <li><a href="javascript:void(0);">Website Design</a></li>
-                    <li><a href="javascript:void(0);">HTML5</a></li>
-                    <li><a href="javascript:void(0);">Infographics</a></li>
-                    <li><a href="javascript:void(0);">Wordpress Development</a></li>
-                </ul>
-            </div>
+    </div>
+
+    <div class="card" id="tag">
+        <div class="header">
+            <span id="tag_title">文章標籤</span>
         </div>
+        <div class="body widget">
+            <ul class="list-unstyled categories-clouds m-b-0"
+                v-for="tag in tags" :key="tag.id">
+                <li class="btn btn-outline-primary">{{ tag.name }}</li>
+            </ul>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "SideBox"
+    name: 'SideBox',
+    data() {
+        return {
+            tags: [],
+            searchKeyword: '',
+        }
+    },
+    mounted() {
+        this.fetchTags();
+    },
+    methods: {
+        fetchTags() {
+            this.$store.dispatch('getTags')
+                .then(response => {
+                    this.tags = response;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        searchPosts() {
+            this.$store.dispatch('setKeyword', this.searchKeyword );
+        }
+    }
 }
 </script>
 
 <style scoped>
-body{
+body {
     background-color: #f4f7f6;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 .card {
@@ -70,16 +85,21 @@ body{
     color: #444;
     padding: 20px;
     font-weight: 400;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 .card .header {
     color: #444;
     padding: 20px;
     position: relative;
     box-shadow: none;
 }
+
 .card h2 {
     color: #fff
 }
+
 .card a {
     text-decoration: none;
 }
@@ -88,7 +108,7 @@ body{
     padding: 30px
 }
 
-.single_post .img-post>img {
+.single_post .img-post > img {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1);
@@ -109,7 +129,7 @@ body{
     -webkit-transition: all .8s ease-in-out
 }
 
-.single_post .footer .category li {
+.single_post .footer .tags li {
     border-left: solid 1px rgba(160, 160, 160, 0.3);
     display: inline-block;
     font-weight: 400;
@@ -121,11 +141,11 @@ body{
     font-size: 13px
 }
 
-.single_post .footer .category li a {
+.single_post .footer .tags li a {
     color: #777
 }
 
-.single_post .footer .category li:first-child {
+.single_post .footer .tags li:first-child {
     border-left: 0;
     margin-left: 0;
     padding-left: 0
@@ -179,9 +199,15 @@ body{
     border-right: 1px solid #e4eaec
 }
 
+.categories-clouds {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .right-box .categories-clouds li {
     display: inline-block;
-    margin-bottom: 5px
+    margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 .right-box .categories-clouds li a {
@@ -226,7 +252,7 @@ body{
 }
 
 @media (max-width: 640px) {
-    .blog-page .left-box .single-comment-box>ul>li {
+    .blog-page .left-box .single-comment-box > ul > li {
         padding: 25px 0
     }
 

@@ -6,11 +6,10 @@ const POSTS_API_URL = '/api/v1/posts'
 
 class PostsService {
 
-    getAllPosts(pageNo, sortBy) {
+    getAllPosts(pageNo, sortBy, categoryId, tagId, keyword) {
         return axios
-            .get(BASE_URL + POSTS_API_URL + '?pageNo=' + pageNo + '&sortBy=' + sortBy)
+            .get(BASE_URL + POSTS_API_URL + '?pageNo=' + pageNo + '&sortBy=' + sortBy + '&categoryId=' + categoryId + '&tagId=' + tagId + '&keyword=' + keyword)
             .then(response => {
-                console.log(response.data)
                 return response.data;
             })
             .catch(error => {
@@ -22,7 +21,6 @@ class PostsService {
         return axios
             .post(BASE_URL + POSTS_API_URL + '/' + id)
             .then(response => {
-                console.log(response)
                 return response.data;
             })
             .catch(error => {
