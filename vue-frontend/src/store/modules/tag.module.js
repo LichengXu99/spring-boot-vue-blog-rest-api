@@ -5,6 +5,7 @@ export const tag = {
         loaded: false,
         tags: [],
         tag: [],
+        id: '',
     },
     mutations: {
         getTagsSuccess(state, tags) {
@@ -40,11 +41,11 @@ export const tag = {
         getTag({ commit }, { id }) {
             return TagsService.getOneTagById(id).then(
                 response => {
-                    commit('getPostSuccess', response.data);
+                    commit('getTagSuccess', response.data);
                     return Promise.resolve(response);
                 },
                 error => {
-                    commit('getPostFailure');
+                    commit('getTagFailure');
                     return Promise.reject(error)
                 }
             )

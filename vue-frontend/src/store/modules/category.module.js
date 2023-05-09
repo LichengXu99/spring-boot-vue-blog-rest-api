@@ -5,6 +5,7 @@ export const category = {
         loaded: false,
         categories: [],
         category: [],
+        id: '',
     },
     mutations: {
         getCategoriesSuccess(state, categories) {
@@ -15,11 +16,11 @@ export const category = {
             state.loaded = false;
             state.categories = [];
         },
-        getTagSuccess(state, category) {
+        getCategorySuccess(state, category) {
             state.loaded = true;
             state.category = category;
         },
-        getTagFailure(state) {
+        getCategoryFailure(state) {
             state.loaded = false;
             state.category = [];
         },
@@ -40,11 +41,11 @@ export const category = {
         getCategory({ commit }, { id }) {
             return CategoriesService.getOneCategoryById(id).then(
                 response => {
-                    commit('getPostSuccess', response.data);
+                    commit('getCategorySuccess', response.data);
                     return Promise.resolve(response);
                 },
                 error => {
-                    commit('getPostFailure');
+                    commit('getCategoryFailure');
                     return Promise.reject(error)
                 }
             )

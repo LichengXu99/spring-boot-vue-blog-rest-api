@@ -24,7 +24,7 @@
         <div class="body widget">
             <ul class="list-unstyled categories-clouds m-b-0"
                 v-for="tag in tags" :key="tag.id">
-                <li class="btn btn-outline-primary">{{ tag.name }}</li>
+                <li class="btn btn-outline-primary" @click="selectTag(tag.id)">{{ tag.name }}</li>
             </ul>
         </div>
     </div>
@@ -53,8 +53,11 @@ export default {
                 })
         },
         searchPosts() {
-            this.$store.dispatch('setKeyword', this.searchKeyword );
-        }
+            this.$store.dispatch('setKeyword', this.searchKeyword);
+        },
+        selectTag(tagId) {
+            this.$store.dispatch('setTag', tagId);
+        },
     }
 }
 </script>

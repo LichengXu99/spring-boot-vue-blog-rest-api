@@ -31,11 +31,23 @@ export const post = {
         },
         setKeywordSuccess(state, keyword) {
             state.keyword = keyword;
-        }
+        },
+        selectTagIdSuccess(state, tagId) {
+            state.tagId = tagId;
+        },
+        selectCategoryIdSuccess(state, categoryId) {
+            state.categoryId = categoryId;
+        },
     },
     actions: {
         setKeyword({ commit }, keyword) {
             commit('setKeywordSuccess', keyword);
+        },
+        setTag({ commit }, tagId) {
+            commit('selectTagIdSuccess', tagId)
+        },
+        setCategory({ commit }, categoryId) {
+            commit('selectCategoryIdSuccess', categoryId)
         },
         getPosts({ commit }, { pageNo, sortBy, categoryId, tagId , keyword}) {
             return PostsService.getAllPosts(pageNo, sortBy, categoryId, tagId, keyword).then(
@@ -63,6 +75,8 @@ export const post = {
         },
     },
     getters: {
-        getKeyword: state => state.keyword
+        getKeyword: state => state.keyword,
+        getTagId: state => state.tagId,
+        getCategoryId: state => state.categoryId,
     },
 };

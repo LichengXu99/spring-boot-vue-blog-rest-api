@@ -1,4 +1,16 @@
 <template>
+
+    <div class="search-conditions" v-if="tagId || categoryId || keyword">
+        <span v-if="tagId || categoryId || keyword">當前搜尋條件：</span>
+        <span v-if="tagId">標籤: {{ selectedTagName }}</span>
+        <span v-if="categoryId">分類: {{ selectedCategoryName }}</span>
+        <span v-if="keyword">關鍵字: {{ keyword }}</span>
+        <span class="float-end"
+              id="cleanUp"
+              @click="cleanUp"
+              v-if="tagId || categoryId || keyword">清空所有條件</span>
+    </div>
+
     <div class="card single"
          v-for="post in posts"
          :key="post.id">
@@ -22,7 +34,6 @@
                 <li>{{ tag.name }}</li>
             </ul>
         </div>
-
 
     </div>
 
@@ -69,10 +80,10 @@ export default {
             posts: [],
             pageNo: 0,
             sortBy: '',
-            tagId: '',
-            categoryId: '',
             totalPages: '',
             last: false,
+            selectedTagName: '',
+            selectedCategoryName: '',
         }
     },
     computed: {
@@ -82,6 +93,12 @@ export default {
         keyword() {
             return this.$store.getters.getKeyword;
         },
+        tagId() {
+            return this.$store.getters.getTagId || '';
+        },
+        categoryId() {
+            return this.$store.getters.getCategoryId || '';
+        },
     },
     mounted() {
         this.fetchPosts();
@@ -89,6 +106,22 @@ export default {
     watch: {
         keyword(newVal, oldVal) {
             this.fetchPosts();
+        },
+        tagId(newVal, oldVal) {
+            this.fetchPosts();
+            this.getTagName(this.tagId);
+        },
+        categoryId(newVal, oldVal) {
+            this.fetchPosts();
+            this.getCategoryName(this.categoryId);
+        },
+        '$route': {
+            immediate: true,
+            handler(to, from) {
+                this.$store.dispatch('setTag', '');
+                this.$store.dispatch('setCategory', '');
+                this.$store.dispatch('setKeyword', '');
+            }
         },
     },
     methods: {
@@ -132,6 +165,29 @@ export default {
                 this.fetchPosts();
             }
         },
+        getTagName(tagId) {
+            this.$store.dispatch('getTag', {id: tagId})
+                .then(response => {
+                    this.selectedTagName = response.name;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        getCategoryName(categoryId) {
+            this.$store.dispatch('getCategory', {id: categoryId})
+                .then(response => {
+                    this.selectedCategoryName = response.name;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        cleanUp() {
+            this.$store.dispatch('setTag', '');
+            this.$store.dispatch('setCategory', '');
+            this.$store.dispatch('setKeyword', '');
+        },
     }
 };
 
@@ -141,6 +197,25 @@ export default {
 body {
     background-color: #f4f7f6;
     margin-top: 20px;
+}
+
+.search-conditions {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.search-conditions span {
+    margin-right: 10px;
+    color: #848181;
+}
+
+#cleanUp {
+    cursor: pointer;
+}
+
+#cleanUp:hover {
+    color: #4a4a4a;
 }
 
 .card {

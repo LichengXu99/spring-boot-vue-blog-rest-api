@@ -22,6 +22,7 @@ export const auth = {
             );
         },
         logout({ commit }) {
+            console.log("test")
             AuthService.logout();
             commit('logout');
         },

@@ -1,7 +1,6 @@
 <template>
     <header class="header">
         <!-- Blog logo -->
-
         <!-- Blog logo -->
         <!-- Navigation Bar -->
         <nav class="nav">
@@ -13,10 +12,12 @@
                     <div class="dropdown">
                         <button class="dropbtn">Category ⏷</button>
                         <div class="dropdown-content">
-                            <a href="#"
-                               v-for="category in categories"
-                               :key="category.id">
-                                {{ category.name }}
+                            <a
+                                    v-for="category in categories"
+                                    :key="category.id">
+                                <button class="demo-btn" @click="selectCategory(category.id)">
+                                    {{ category.name }}
+                                </button>
                             </a>
                         </div>
                     </div>
@@ -27,7 +28,11 @@
                 <li>
                     <router-link to="/contact">Contact</router-link>
                 </li>
-
+                <!-- Admin -->
+                <li v-if="hasLogin">
+                    <button id="logout" class="demo-btn" @click="logout">Logout</button>
+                </li>
+                <!-- Admin -->
             </ul>
         </nav>
         <!-- Navigation Bar -->
@@ -41,20 +46,42 @@ export default {
     data() {
         return {
             categories: [],
+            hasLogin: false,
         }
     },
     created() {
         this.fetchCategories();
     },
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        },
+    },
+    watch: {
+      loggedIn(newVal, oldVal) {
+        if (newVal === false) {
+            this.hasLogin = false;
+        } else if (newVal === true) {
+            this.hasLogin = true;
+        }
+      },
+    },
     methods: {
         fetchCategories() {
-            this.$store.dispatch("getCategories")
+            this.$store.dispatch('getCategories')
                 .then(response => {
                     this.categories = response;
                 })
                 .catch(error => {
                     console.log(error);
                 })
+        },
+        selectCategory(categoryId) {
+            this.$router.push('/')
+            this.$store.dispatch('setCategory', categoryId);
+        },
+        logout() {
+            this.$store.dispatch('auth/logout');
         }
     }
 }
@@ -199,4 +226,24 @@ export default {
 .dropbtn:hover .dropbtn {
     color: #ffcc03;
 }
+
+.demo-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.demo-btn:hover {
+    color: #ffcc03;
+}
+
+#logout {
+    color: #f1f1f1;
+}
+
+#logout:hover {
+    color: #ffcc03;
+}
+
 </style>
