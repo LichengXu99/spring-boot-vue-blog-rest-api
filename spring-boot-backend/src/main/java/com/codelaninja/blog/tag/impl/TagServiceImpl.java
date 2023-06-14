@@ -50,6 +50,17 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<TagDto> getTagByKeyword(String keyword) {
+
+        List<Tag> tags = tagRepository.findByTagName(keyword);
+
+        return tags
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public TagDto updateTag(TagDto tagDto, Long tagId) {
 
         Tag tag = tagRepository.findById(tagId)

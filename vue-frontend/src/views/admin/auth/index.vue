@@ -82,9 +82,8 @@ export default {
           (error) => {
             this.loading = false;
             this.message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
+                (error.response && error.response.data && error.response.data.message) ||
+                error.response.data ||
                 error.message ||
                 error.toString();
           }

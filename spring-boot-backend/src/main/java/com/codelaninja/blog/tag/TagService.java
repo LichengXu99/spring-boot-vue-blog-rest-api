@@ -10,6 +10,8 @@ public interface TagService {
 
     TagDto getTagById(Long categoryId);
 
+    List<TagDto> getTagByKeyword(String keyword);
+
     TagDto updateTag(TagDto tagDto, Long tagId);
 
     void deleteTagById(Long tagId);

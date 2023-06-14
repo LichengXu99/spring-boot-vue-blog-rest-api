@@ -6,9 +6,9 @@ const TAGS_API_URL = '/api/v1/tags'
 
 class TagsService {
 
-    getAllTags() {
+    getAllTags(keyword) {
         return axios
-            .get(BASE_URL + TAGS_API_URL)
+            .get(BASE_URL + TAGS_API_URL + '?keyword=' + keyword)
             .then(response => {
                 return response.data;
             })
@@ -28,9 +28,9 @@ class TagsService {
             });
     }
 
-    createNewTag(newTag) {
+    createNewTag(tagName) {
         return axios
-            .post(BASE_URL + TAGS_API_URL, { newTag }, { headers: authHeader() });
+            .post(BASE_URL + TAGS_API_URL, { name: tagName }, { headers: authHeader() });
     }
 }
 

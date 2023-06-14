@@ -5,7 +5,7 @@
                 <span class="input-group-text"><i class="fa fa-search"></i></span>
                 <input type="text" class="form-control"
                        v-model="searchKeyword" placeholder="Search...">
-                <button class="btn btn-outline-danger" @click="searchPosts">Search</button>
+                <button class="btn btn-outline-danger" @click="searchPosts">搜尋</button>
             </div>
         </div>
     </div>
@@ -53,9 +53,11 @@ export default {
                 })
         },
         searchPosts() {
+            this.$router.push('/')
             this.$store.dispatch('setKeyword', this.searchKeyword);
         },
         selectTag(tagId) {
+            this.$router.push('/')
             this.$store.dispatch('setTag', tagId);
         },
     }

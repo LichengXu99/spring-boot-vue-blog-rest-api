@@ -1,4 +1,6 @@
 <template>
+
+
     <v-md-preview :text="markdown"></v-md-preview>
 </template>
 
@@ -9,6 +11,7 @@ export default {
         return {
             id: '',
             markdown: '',
+            title: '',
         }
     },
     mounted() {
@@ -21,6 +24,7 @@ export default {
             this.$store.dispatch('getPost', {id: this.id})
                 .then(response => {
                     this.markdown = response.content;
+                    this.title = response.title;
                 })
                 .catch(error => {
                     console.log(error)

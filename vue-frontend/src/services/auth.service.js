@@ -11,15 +11,15 @@ class AuthService {
                 password: user.password
             })
             .then(response => {
-                if (response.data.accessToken) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
+                if (response.data) {
+                    localStorage.setItem('token', response.data.token);
                 }
-                return response.data;
+                return response.data.token;
             });
     }
 
     logout() {
-        localStorage.removeItem('user');
+        localStorage.removeItem('token');
     }
 
     register(user) {

@@ -38,8 +38,27 @@ export const post = {
         selectCategoryIdSuccess(state, categoryId) {
             state.categoryId = categoryId;
         },
+        updatePostSuccess(state) {
+            state.loaded = true;
+        },
+        updatePostFailure(state) {
+            state.loaded = false;
+        }
     },
     actions: {
+        updatePost({ commit }, editedPost) {
+            console.log(editedPost)
+            return PostsService.editOnePost(editedPost).then(
+                response => {
+                    commit('updatePostSuccess', response.data);
+                    return Promise.resolve(response);
+                },
+                error => {
+                    commit('updatePostFailure')
+                    return Promise.reject(error);
+                }
+            )
+        },
         setKeyword({ commit }, keyword) {
             commit('setKeywordSuccess', keyword);
         },

@@ -17,6 +17,7 @@ import java.util.List;
 public class TagController {
 
     private final TagServiceImpl tagService;
+    private final TagRepository tagRepository;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
@@ -28,8 +29,10 @@ public class TagController {
     }
 
     @GetMapping
-    public List<TagDto> getAllTag() {
-
+    public List<TagDto> getAllTag(@RequestParam(required = false) String keyword) {
+        if (keyword != null && !keyword.isEmpty()) {
+            return tagService.getTagByKeyword(keyword);
+        }
         return tagService.getAllTag();
     }
 
@@ -40,5 +43,6 @@ public class TagController {
 
         return new ResponseEntity<>(tagService.getTagById(id), HttpStatus.OK);
     }
+
 
 }

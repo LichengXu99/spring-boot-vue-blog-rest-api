@@ -20,7 +20,7 @@
         <div class="body">
             <div class="img-post">
                 <img class="d-block img-fluid" src="https://www.bootdey.com/image/800x280/FFB6C1/000000"
-                     alt="First slide">
+                     alt="封面">
             </div>
             <h3>{{ post.title }}</h3>
             <p>{{ post.description }}</p>
@@ -28,7 +28,8 @@
 
         <div class="footer">
             <div class="actions">
-                <router-link class="btn btn-outline-secondary" :to="'/post/' + post.id">繼續閱讀</router-link>
+                <router-link v-if="loggedIn" class="btn btn-outline-secondary" :to="'/editor/' + post.id">編輯文章</router-link>
+                <router-link v-else class="btn btn-outline-secondary" :to="'/post/' + post.id">繼續閱讀</router-link>
             </div>
             <ul class="tags" v-for="(tag, index) in post.tags" :key="index">
                 <li>{{ tag.name }}</li>
@@ -98,6 +99,9 @@ export default {
         },
         categoryId() {
             return this.$store.getters.getCategoryId || '';
+        },
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
         },
     },
     mounted() {

@@ -6,11 +6,11 @@
         <nav class="nav">
             <ul class="navigation-main">
                 <li>
-                    <router-link to="/">Home</router-link>
+                    <router-link to="/">首頁</router-link>
                 </li>
                 <li>
                     <div class="dropdown">
-                        <button class="dropbtn">Category ⏷</button>
+                        <button class="dropbtn">類別 ⏷</button>
                         <div class="dropdown-content">
                             <a
                                     v-for="category in categories"
@@ -23,14 +23,14 @@
                     </div>
                 </li>
                 <li>
-                    <router-link to="/about">About</router-link>
+                    <router-link to="/about">關於</router-link>
                 </li>
                 <li>
-                    <router-link to="/contact">Contact</router-link>
+                    <router-link to="/contact">聯絡資訊</router-link>
                 </li>
                 <!-- Admin -->
                 <li v-if="hasLogin">
-                    <button id="logout" class="demo-btn" @click="logout">Logout</button>
+                    <button id="logout" class="demo-btn" @click="logout">登出</button>
                 </li>
                 <!-- Admin -->
             </ul>
@@ -49,9 +49,10 @@ export default {
             hasLogin: false,
         }
     },
-    created() {
-        this.fetchCategories();
-    },
+  created() {
+    this.fetchCategories();
+    this.hasLogin = this.$store.state.auth.status.loggedIn;
+  },
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
@@ -215,6 +216,10 @@ export default {
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
     background-color: #f1f1f1
+}
+
+.dropdown button:hover {
+    color: #ffcc03;
 }
 
 /* Show the dropdown menu on hover */

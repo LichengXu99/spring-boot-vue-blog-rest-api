@@ -1,9 +1,9 @@
 import AuthService from '@/services/auth.service';
 
-const user = JSON.parse(localStorage.getItem('user'));
-const initialState = user
-    ? { status: { loggedIn: true }, user }
-    : { status: { loggedIn: false }, user: null };
+const token = localStorage.getItem('token');
+const initialState = token
+    ? { status: { loggedIn: true }, token }
+    : { status: { loggedIn: false }, token: null };
 
 export const auth = {
     namespaced: true,
@@ -22,9 +22,9 @@ export const auth = {
             );
         },
         logout({ commit }) {
-            console.log("test")
             AuthService.logout();
             commit('logout');
+            localStorage.removeItem('token'); // 移除 token
         },
         register({ commit }, user) {
             return AuthService.register(user).then(
